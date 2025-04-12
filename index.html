@@ -1,18 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
+    <meta charset="UTF-8">
     <title>Contador Regressivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fff0f5;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #contador {
+            color: #ff4fa6;
+            font-size: 5rem;
+            text-align: center;
+            animation: pulse 1s infinite ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #contador {
+                font-size: 3rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="contador"></div>
+    <div id="contador">Carregando...</div>
 
     <script>
-        // Data fixa definida no código (formato: 'YYYY-MM-DD HH:mm:ss')
-        const dataFinal = new Date('2025-05-10 06:25:00').getTime();
-        
+        const dataFinal = new Date('2025-05-10T06:25:00').getTime();
+
         function atualizarContador() {
             const agora = new Date().getTime();
             const diferenca = dataFinal - agora;
+
+            if (diferenca <= 0) {
+                clearInterval(interval);
+                document.getElementById('contador').innerHTML = "🎉 Contagem encerrada!";
+                return;
+            }
 
             const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
             const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -21,15 +72,10 @@
 
             document.getElementById('contador').innerHTML = 
                 `${dias}d ${horas}h ${minutos}m ${segundos}s`;
-
-            if (diferenca <= 0) {
-                clearInterval(interval);
-                document.getElementById('contador').innerHTML = "Contagem encerrada!";
-            }
         }
 
         const interval = setInterval(atualizarContador, 1000);
-        atualizarContador(); // Executa imediatamente
+        atualizarContador();
     </script>
 </body>
 </html>
